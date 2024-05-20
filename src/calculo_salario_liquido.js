@@ -11,6 +11,6 @@ function calcularSalarioLiquido(salarioBruto){
     ir = calcularIR(salarioBruto);
     salarioLiquido = salarioBruto - inss - ir;
 
- return salarioLiquido;
+ return salarioLiquido.toFixed(2);
 }
 module.exports = calcularSalarioLiquido;
