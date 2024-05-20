@@ -2,8 +2,12 @@ const calcularINSS = require("./calculo_inss");
 const calcularIR = require("./calculo_imposto_renda");
 const calcularSalarioLiquido = require("./calculo_salario_liquido");
 const readline = require("readline");
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
 
 const input = readline.createInterface(process.stdin,process.stdout);
+
+
 
 //funçaõ para formatar cpf
 function formatarCPF(cpf){
@@ -41,6 +45,25 @@ console.log("Salário Bruto: R$ " + salario);
 console.log("INSS: R$ "+ inss);
 console.log("Imposto de Renda: R$ " + ir);
 console.log("Salário líquido: R$ " + salarioLiquido);
+
+
+const doc = new PDFDocument();
+doc.pipe(fs.createWriteStream('folha_pagamento.pdf'))
+doc.fontSize(16);
+doc.text('--- Folha de Pagamento ---');
+doc.text(`Data de Geração: ${new Date().toLocaleDateString()}`);
+doc.text(`Nome: ${nome}`);
+doc.text(`CPF: ${cpf}`);
+doc.text('--- ---');
+doc.text(`Salário Bruto: ${salario}`);
+doc.text('--- ---');
+doc.text(`INSS: ${inss}`);
+doc.text(`Imposto de Renda: ${ir}`);
+doc.text('Outros descontos R$ 0.00');
+doc.text('--- ---');
+doc.text(`Salário Líquido: ${salarioLiquido}`);
+doc.end();
+console.log('Folha de pagamento salva em folha_pagamento.pdf');
 
 });
 });
