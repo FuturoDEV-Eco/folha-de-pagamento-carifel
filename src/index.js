@@ -21,6 +21,7 @@ let salario = 0;
 let salarioLiquido = 0;
 let inss = 0;
 let ir = 0;
+let resposta = "";
 
 input.question("Nome: ", (nomeDigitado) =>{
     nome = nomeDigitado;
@@ -33,7 +34,7 @@ input.question("Mês do pagamento (formato XX numerico): ", (mesDigitado) =>{
 
 input.question("Salário bruto: ", (salarioDigitado) =>{
     salario = salarioDigitado;
-input.close();
+
 
 salarioLiquido = calcularSalarioLiquido(salario);
 inss = calcularINSS(salario);
@@ -46,26 +47,32 @@ console.log("INSS: R$ "+ inss);
 console.log("Imposto de Renda: R$ " + ir);
 console.log("Salário líquido: R$ " + salarioLiquido);
 
+input.question("Deseja gerar um pdf com a folha de pagamento (S/N)?: ", (respostaDigitada) =>{
+    resposta = respostaDigitada;
 
-const doc = new PDFDocument();
-doc.pipe(fs.createWriteStream('folha_pagamento.pdf'))
-doc.fontSize(16);
-doc.text('--- Folha de Pagamento ---');
-doc.text(`Data de Geração: ${new Date().toLocaleDateString()}`);
-doc.text(`Nome: ${nome}`);
-doc.text(`CPF: ${cpf}`);
-doc.text('--- ---');
-doc.text(`Salário Bruto: ${salario}`);
-doc.text('--- ---');
-doc.text(`INSS: ${inss}`);
-doc.text(`Imposto de Renda: ${ir}`);
-doc.text('Outros descontos R$ 0.00');
-doc.text('--- ---');
-doc.text(`Salário Líquido: ${salarioLiquido}`);
-doc.end();
-console.log('Folha de pagamento salva em folha_pagamento.pdf');
-
+if(resposta == "S" || resposta == "s" || resposta == "sim" || resposta == "SIM")
+    {
+        const doc = new PDFDocument();
+        doc.pipe(fs.createWriteStream('folha_pagamento.pdf'))
+        doc.fontSize(16);
+        doc.text('--- Folha de Pagamento ---');
+        doc.text(`Data de Geração: ${new Date().toLocaleDateString()}`);
+        doc.text(`Nome: ${nome}`);
+        doc.text(`CPF: ${cpf}`);
+        doc.text('--- ---');
+        doc.text(`Salário Bruto: ${salario}`);
+        doc.text('--- ---');
+        doc.text(`INSS: ${inss}`);
+        doc.text(`Imposto de Renda: ${ir}`);
+        doc.text('Outros descontos R$ 0.00');
+        doc.text('--- ---');
+        doc.text(`Salário Líquido: ${salarioLiquido}`);
+        doc.end();
+        console.log('Folha de pagamento salva em folha_pagamento.pdf');
+    }
+    input.close();
 });
 });
 });
-});  
+}); 
+}); 
